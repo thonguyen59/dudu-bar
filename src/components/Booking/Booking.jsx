@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from "react";
+import axios from 'axios';
 
 const Booking = () => {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
-        guests: "",
+        numOfPeople: "",
         datetime: "",
     });
+    const [status, setStatus] = useState('');
+
 
     useEffect(() => {
         const now = new Date();
@@ -23,11 +26,42 @@ const Booking = () => {
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async e => {
         console.log("Booking Info:", formData);
-        // You can add email or Google Sheets logic here
+        e.preventDefault();
+        // try {
+        //     await axios.post(
+        //         'https://script.google.com/macros/s/AKfycbwrINaJWAPkqdKRQquZZfv7NrI9xtHJRap-n9L_oOuT4SCnlwpmwrFMQk4PVxGzx32ybg/exec',
+        //         formData
+        //     );
+        //     setStatus('Gửi thành công!');
+        //     console.log('Gửi thành công!');
+        //     setFormData({name: '', phone: '', numOfPeople: ''});
+        // } catch (error) {
+        //     setStatus('Gửi thất bại.');
+        //     console.error(error);
+        // }
+
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwrINaJWAPkqdKRQquZZfv7NrI9xtHJRap-n9L_oOuT4SCnlwpmwrFMQk4PVxGzx32ybg/exec';
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors', // Sử dụng 'no-cors' để tránh lỗi CORS
+            headers: {
+                'Content-Type': 'application/json' // Đảm bảo dữ liệu được gửi đi dưới dạng JSON
+            },
+            body: JSON.stringify(formData) // Chuyển đổi đối tượng formData thành chuỗi JSON
+        })
+            .then(() => {
+                setStatus('Gửi thành công!');
+                setFormData({name: '', phone: '', numOfPeople: ''});
+            })
+            .catch(error => {
+                setStatus('Gửi thất bại.');
+                console.error('Error:', error);
+            });
     };
+
 
     return (
         <div id="booking" className={"bg-amber-800/25 py-10"}>
@@ -54,9 +88,9 @@ const Booking = () => {
                     />
                     <input
                         type="number"
-                        name="guests"
+                        name="numOfPeople"
                         placeholder="Số người"
-                        value={formData.guests}
+                        value={formData.numOfPeople}
                         onChange={handleChange}
                         min="1"
                         className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-wine"
@@ -78,6 +112,7 @@ const Booking = () => {
                     </button>
                 </form>
             </section>
+            <p>{status}</p>
         </div>
     );
 };

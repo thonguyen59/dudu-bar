@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from 'axios';
 
 const Booking = () => {
     const [formData, setFormData] = useState({
@@ -26,40 +25,48 @@ const Booking = () => {
         });
     };
 
-    const handleSubmit = async e => {
-        console.log("Booking Info:", formData);
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // try {
-        //     await axios.post(
-        //         'https://script.google.com/macros/s/AKfycbwrINaJWAPkqdKRQquZZfv7NrI9xtHJRap-n9L_oOuT4SCnlwpmwrFMQk4PVxGzx32ybg/exec',
-        //         formData
-        //     );
-        //     setStatus('Gửi thành công!');
-        //     console.log('Gửi thành công!');
-        //     setFormData({name: '', phone: '', numOfPeople: ''});
-        // } catch (error) {
-        //     setStatus('Gửi thất bại.');
-        //     console.error(error);
-        // }
-
-
+        
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrINaJWAPkqdKRQquZZfv7NrI9xtHJRap-n9L_oOuT4SCnlwpmwrFMQk4PVxGzx32ybg/exec';
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors', // Sử dụng 'no-cors' để tránh lỗi CORS
-            headers: {
-                'Content-Type': 'application/json' // Đảm bảo dữ liệu được gửi đi dưới dạng JSON
-            },
-            body: JSON.stringify(formData) // Chuyển đổi đối tượng formData thành chuỗi JSON
-        })
-            .then(() => {
+        setStatus('Đang kiểm tra...');
+
+        try {
+            // First, check with GET request
+            const checkResponse = await fetch(scriptURL, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            // Handle the response
+            const checkData = await checkResponse.json();
+            console.log(checkData);
+            if (checkData.code === '200') {
+                // If check passes, proceed with POST request
+                setStatus('Đang gửi...');
+                const postResponse = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Since we can't read the response with no-cors, we'll assume success
+                // if the request completes without throwing an error
                 setStatus('Gửi thành công!');
                 setFormData({name: '', phone: '', numOfPeople: ''});
-            })
-            .catch(error => {
-                setStatus('Gửi thất bại.');
-                console.error('Error:', error);
-            });
+            } else {
+                // Show error message from GET response
+                setStatus(checkData.message || 'Có lỗi xảy ra. Vui lòng thử lại sau.');
+            }
+        } catch (error) {
+            setStatus('Gửi thất bại. Vui lòng thử lại sau.');
+            console.error('Error:', error);
+        }
     };
 
 

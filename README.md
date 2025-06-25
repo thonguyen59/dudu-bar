@@ -1,12 +1,41 @@
-# React + Vite
+# Restaurant Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive restaurant website built with React, Tailwind CSS, and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📱 Fully responsive design
+- 🎨 Modern UI with smooth animations
+- 🔄 Dynamic page navigation
+- 📜 Multiple sections: Menu, Events, Gallery, Contact, and Reservations
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Before you begin, ensure you have installed:
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
+- [npm](https://www.npmjs.com/) (v8.0.0 or higher)
+
+## Installation
+
+1. Clone the repository:
+   Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm run preview` - Preview production build
+- `npm run deploy` - Deploy to GitHub Pages
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint errors
+
+## Tech Stack
+
+- React 19.1.0
+- React DOM 19.1.0
+- Tailwind CSS 4.1.7
+- Vite 6.3.5
+- Framer Motion 12.11.3
+- Lucide React 0.516.0
+- ESLint 9.25.0
+- PostCSS 8.5.3
+
+## Project Structure
